@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -18,17 +19,14 @@ public class EventRepositoryImpl implements EventRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public void saveEvent(Event event, Aggregate aggregate) {
-        Query query = entityManager.createNativeQuery("SELECT version FROM aggregate WHERE id = :aggregateId;", long.class);
-        query.setParameter("aggregateId", aggregate.getId());
-        long aggregateVersion = (long) query.getSingleResult();
-        if(aggregate.getVersion() != aggregateVersion){
+    public void saveEvent(Event event, long aggregateId) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM aggregate WHERE id = :aggregateId", Aggregate.class);
+        query.setParameter("aggregateId", aggregateId);
+        Aggregate aggregate = (Aggregate) query.getSingleResult();
+        if(aggregate.getVersion() != event.getAggregate().getVersion()){
             throw new ConcurrencyException();
         }
-        Query insertEvent = entityManager.createNativeQuery("INSERT ");
-        Query updateAggregate = entityManager.createNativeQuery("UPDATE aggregate SET version = :version WHERE id = :aggregateId;");
-        updateAggregate.setParameter("aggregateId", aggregate.getId());
-        updateAggregate.setParameter("version", event.getVersion());
-        updateAggregate.executeUpdate();
+        entityManager.lock(aggregate, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        entityManager.persist(event);
     }
 }
