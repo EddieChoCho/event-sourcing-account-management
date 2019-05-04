@@ -36,4 +36,13 @@ public class EventService {
         return event;
     }
 
+    public Event saveEvent(AccountEvent accountEvent, Aggregate aggregate, boolean isTest) throws ConcurrencyException, InterruptedException {
+        Event event = converter.convertToEvent(accountEvent, aggregate);
+        if(isTest){
+            Thread.currentThread().sleep(5000);
+        }
+        eventRepository.saveEvent(event);
+        return event;
+    }
+
 }

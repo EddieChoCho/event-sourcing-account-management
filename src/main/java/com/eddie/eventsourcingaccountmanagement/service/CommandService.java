@@ -20,4 +20,9 @@ public class CommandService {
         AccountEvent event = command.apply();
         return eventService.saveEvent(event, aggregate);
     }
+
+    public Event applyCommand(Aggregate aggregate, Command command, boolean isTest) throws InterruptedException {
+        AccountEvent event = command.apply();
+        return eventService.saveEvent(event, aggregate, isTest);
+    }
 }

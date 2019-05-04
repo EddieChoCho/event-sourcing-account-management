@@ -44,6 +44,13 @@ public class CommandController {
         return commandService.applyCommand(aggregate, command);
     }
 
+    @PostMapping("deposit/test")
+    public Event deposit(@RequestParam(value = "id") long id, @RequestParam(value = "amount") long amount, @RequestParam(value = "test") boolean isTest) throws InterruptedException {
+        Aggregate aggregate = aggregateService.getAggregate(id);
+        Deposit command = new Deposit(amount);
+        return commandService.applyCommand(aggregate, command, isTest);
+    }
+
     @PostMapping("withdrawal")
     public Event withdrawal(@RequestParam(value = "id") long id, @RequestParam(value = "amount") long amount) throws BalanceException {
         Aggregate aggregate = aggregateService.getAggregate(id);
