@@ -10,12 +10,12 @@ import javax.persistence.ManyToOne;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties({"aggregate"})
 public class Event extends AbstractEntity {
     private String type;
     private String content;
     private long version;
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Aggregate aggregate;
 
     public Event(String type, String content, Aggregate aggregate){
