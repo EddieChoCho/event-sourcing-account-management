@@ -1,5 +1,7 @@
-# A project for paraticing Event-Sourcing
+# A project for practicing Event-Sourcing
 
+## API Document
+- [Bank Account Management API](https://github.com/EddieChoCho/event-sourcing-account-management/blob/master/Endpoints.md)
 
 ## What is Event-Sourcing?
 

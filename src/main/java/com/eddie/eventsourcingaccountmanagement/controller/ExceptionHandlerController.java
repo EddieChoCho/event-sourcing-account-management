@@ -1,7 +1,7 @@
 package com.eddie.eventsourcingaccountmanagement.controller;
 
 import com.eddie.eventsourcingaccountmanagement.exception.BalanceException;
-import com.eddie.eventsourcingaccountmanagement.exception.ConcurrencyException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,9 +17,9 @@ public class ExceptionHandlerController {
         return exception.getLocalizedMessage();
     }
 
-    @ExceptionHandler(ConcurrencyException.class)
+    @ExceptionHandler(StaleObjectStateException.class)
     @ResponseBody
-    public String handleCustomException(ConcurrencyException exception, Locale locale) {
+    public String handleCustomException(StaleObjectStateException exception, Locale locale) {
         return exception.getLocalizedMessage();
     }
 }

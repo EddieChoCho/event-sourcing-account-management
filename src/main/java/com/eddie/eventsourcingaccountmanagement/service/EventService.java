@@ -1,7 +1,6 @@
 package com.eddie.eventsourcingaccountmanagement.service;
 
 import com.eddie.eventsourcingaccountmanagement.event.AccountEvent;
-import com.eddie.eventsourcingaccountmanagement.exception.ConcurrencyException;
 import com.eddie.eventsourcingaccountmanagement.model.Aggregate;
 import com.eddie.eventsourcingaccountmanagement.model.Event;
 import com.eddie.eventsourcingaccountmanagement.repository.EventRepository;
@@ -30,7 +29,7 @@ public class EventService {
         return events.stream().map(event -> converter.convertToAccountEvent(event)).collect(Collectors.toList());
     }
 
-    public Event saveEvent(AccountEvent accountEvent, Aggregate aggregate) throws ConcurrencyException {
+    public Event saveEvent(AccountEvent accountEvent, Aggregate aggregate) {
         Event event = converter.convertToEvent(accountEvent, aggregate);
         eventRepository.saveEvent(event);
         return event;
