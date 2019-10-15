@@ -15,8 +15,13 @@ public class QueryController {
     }
 
     @GetMapping("/account/{id}")
-    public BankAccount withdrawal(@PathVariable long id) {
+    public BankAccount getBankAccount(@PathVariable long id) {
         return queryService.getBankAccount(id);
+    }
+
+    @GetMapping("/account/{id}/snapshot")
+    public BankAccount getBankAccountWithSnapshot(@PathVariable long id) {
+        return queryService.getBankAccountWithSnapshot(id);
     }
 
 }

@@ -1,16 +1,16 @@
 package com.eddie.eventsourcingaccountmanagement.dom;
 
 import com.eddie.eventsourcingaccountmanagement.exception.BalanceException;
-import com.eddie.eventsourcingaccountmanagement.model.AbstractEntity;
 import lombok.Data;
 
 @Data
-public class BankAccount extends AbstractEntity {
+public class BankAccount {
+    private Long id;
     private String owner;
     private long balance;
 
     public BankAccount(long id){
-        setId(id);
+        this.id = id;
     }
 
     public void deposit(long deposit) {
@@ -23,5 +23,10 @@ public class BankAccount extends AbstractEntity {
         }
         this.balance = this.balance - withdrawal;
         return withdrawal;
+    }
+
+    public void restoreFromSnapshot(BankAccountSnapshot snapshot){
+        this.owner = snapshot.getOwner();
+        this.balance = snapshot.getBalance();
     }
 }

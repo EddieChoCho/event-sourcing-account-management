@@ -29,6 +29,11 @@ public class EventService {
         return events.stream().map(event -> converter.convertToAccountEvent(event)).collect(Collectors.toList());
     }
 
+    public List<AccountEvent> getAccountEvents(long aggregateId, long version){
+        List<Event> events = eventRepository.findAllByAggregateIdAndVersionGreaterThanOrderByVersion(aggregateId, version);
+        return events.stream().map(event -> converter.convertToAccountEvent(event)).collect(Collectors.toList());
+    }
+
     public Event saveEvent(AccountEvent accountEvent, Aggregate aggregate) {
         Event event = converter.convertToEvent(accountEvent, aggregate);
         eventRepository.saveEvent(event);

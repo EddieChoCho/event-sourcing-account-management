@@ -16,6 +16,7 @@ public class EventConverter {
         EventType type = EventType.valueOf(event.getType());
         Class<AccountEvent> eventClass = type.getEventClass();
         AccountEvent accountEvent = gson.fromJson(event.getContent(), eventClass);
+        accountEvent.setVersion(event.getVersion());
         return accountEvent;
     }
 

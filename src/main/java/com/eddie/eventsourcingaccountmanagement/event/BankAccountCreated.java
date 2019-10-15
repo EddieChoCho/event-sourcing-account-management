@@ -1,11 +1,12 @@
 package com.eddie.eventsourcingaccountmanagement.event;
 
 import com.eddie.eventsourcingaccountmanagement.dom.BankAccount;
+import com.eddie.eventsourcingaccountmanagement.dom.BankAccountSnapshot;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class BankAccountCreated implements AccountEvent {
+public class BankAccountCreated extends AccountEvent {
 
     @NonNull
     private String owner;
@@ -19,5 +20,16 @@ public class BankAccountCreated implements AccountEvent {
         account.setBalance(amount);
         account.setOwner(owner);
         return account;
+    }
+
+    @Override
+    public BankAccountSnapshot apply(BankAccountSnapshot snapshot) {
+        long amount = this.getAmount();
+        String owner = this.getOwner();
+        long version = this.getVersion();
+        snapshot.setOwner(owner);
+        snapshot.deposit(amount);
+        snapshot.setVersion(version);
+        return snapshot;
     }
 }

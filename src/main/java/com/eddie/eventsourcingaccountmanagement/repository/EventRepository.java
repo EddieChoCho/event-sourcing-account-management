@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EventRepository extends EventRepositoryCustom, JpaRepository<Event, Long> {
     List<Event> findAllByAggregateIdOrderByVersion(long aggregateId);
+
+    List<Event> findAllByAggregateIdAndVersionGreaterThanOrderByVersion(long aggregateId, long version);
 }

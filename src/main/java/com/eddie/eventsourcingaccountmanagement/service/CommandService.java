@@ -1,7 +1,10 @@
 package com.eddie.eventsourcingaccountmanagement.service;
 
-import com.eddie.eventsourcingaccountmanagement.command.Command;
+import com.eddie.eventsourcingaccountmanagement.dom.BankAccount;
 import com.eddie.eventsourcingaccountmanagement.event.AccountEvent;
+import com.eddie.eventsourcingaccountmanagement.event.BankAccountCreated;
+import com.eddie.eventsourcingaccountmanagement.event.DepositPerformed;
+import com.eddie.eventsourcingaccountmanagement.event.WithdrawalPerformed;
 import com.eddie.eventsourcingaccountmanagement.model.Aggregate;
 import com.eddie.eventsourcingaccountmanagement.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,19 @@ public class CommandService {
         this.eventService = eventService;
     }
 
-    public Event applyCommand(Aggregate aggregate, Command command){
-        AccountEvent event = command.apply();
+    public Event createAccount(Aggregate aggregate, String owner, long amount){
+        AccountEvent event = new BankAccountCreated(owner, amount);
+        return eventService.saveEvent(event, aggregate);
+    }
+
+    public Event deposit(Aggregate aggregate, long amount){
+        AccountEvent event = new DepositPerformed(amount);
+        return eventService.saveEvent(event, aggregate);
+    }
+
+    public Event withdrawal(Aggregate aggregate, BankAccount account, long amount){
+        AccountEvent event = new WithdrawalPerformed(amount);
+        event.apply(account);
         return eventService.saveEvent(event, aggregate);
     }
 }

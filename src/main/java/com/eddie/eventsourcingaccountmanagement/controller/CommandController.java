@@ -1,8 +1,5 @@
 package com.eddie.eventsourcingaccountmanagement.controller;
 
-import com.eddie.eventsourcingaccountmanagement.command.CreateAccount;
-import com.eddie.eventsourcingaccountmanagement.command.Deposit;
-import com.eddie.eventsourcingaccountmanagement.command.Withdrawal;
 import com.eddie.eventsourcingaccountmanagement.dom.BankAccount;
 import com.eddie.eventsourcingaccountmanagement.exception.BalanceException;
 import com.eddie.eventsourcingaccountmanagement.model.Aggregate;
@@ -29,22 +26,19 @@ public class CommandController {
     @PostMapping("/account")
     public Event createAccount(@RequestParam(value = "owner") String owner, @RequestParam(value = "money") long money) {
         Aggregate aggregate = aggregateService.createAggregate();
-        CreateAccount command = new CreateAccount(owner, money);
-        return commandService.applyCommand(aggregate, command);
+        return commandService.createAccount(aggregate, owner, money);
     }
 
     @PostMapping("/account/{id}/deposit")
     public Event deposit(@PathVariable long id, @RequestParam(value = "amount") long amount) {
         Aggregate aggregate = aggregateService.getAggregate(id);
-        Deposit command = new Deposit(amount);
-        return commandService.applyCommand(aggregate, command);
+        return commandService.deposit(aggregate, amount);
     }
 
     @PostMapping("/account/{id}/withdrawal")
     public Event withdrawal(@PathVariable long id, @RequestParam(value = "amount") long amount) throws BalanceException {
         Aggregate aggregate = aggregateService.getAggregate(id);
         BankAccount account = queryService.getBankAccount(id);
-        Withdrawal command = new Withdrawal(account, amount);
-        return commandService.applyCommand(aggregate, command);
+        return commandService.withdrawal(aggregate, account, amount);
     }
 }
