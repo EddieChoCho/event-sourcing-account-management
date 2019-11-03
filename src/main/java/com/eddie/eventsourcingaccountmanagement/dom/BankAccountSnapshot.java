@@ -1,9 +1,12 @@
 package com.eddie.eventsourcingaccountmanagement.dom;
 
-import lombok.Data;
+import com.eddie.eventsourcingaccountmanagement.event.BankAccountCreated;
+import com.eddie.eventsourcingaccountmanagement.event.DepositPerformed;
+import com.eddie.eventsourcingaccountmanagement.event.WithdrawalPerformed;
+import lombok.Getter;
 
-@Data
-public class BankAccountSnapshot {
+@Getter
+public class BankAccountSnapshot extends AbstractDomainObject  {
 
     private Long id;
     private String owner;
@@ -18,16 +21,23 @@ public class BankAccountSnapshot {
         this.id = id;
     }
 
-    public void deposit(long amount){
-        this.balance += amount;
-        this.totalDepositAmount += amount;
-        this.depositTimes++;
+    public void apply(BankAccountCreated event) {
+        this.owner = event.getOwner();
+        this.version++;
     }
 
-    public void withdrawal(long amount){
-        this.balance -= amount;
-        this.totalWithdrawalAmount -= amount;
+    public void apply(DepositPerformed event) {
+        this.balance += event.getAmount();
+        this.totalDepositAmount += event.getAmount();
+        this.depositTimes++;
+        this.version++;
+    }
+
+    public void apply(WithdrawalPerformed event) {
+        this.balance -= event.getAmount();
+        this.totalWithdrawalAmount -= event.getAmount();
         this.withdrawalTimes++;
+        this.version++;
     }
 
 }

@@ -19,8 +19,8 @@ public class CommandService {
         this.eventService = eventService;
     }
 
-    public Event createAccount(Aggregate aggregate, String owner, long amount){
-        AccountEvent event = new BankAccountCreated(owner, amount);
+    public Event createAccount(Aggregate aggregate, String owner){
+        AccountEvent event = new BankAccountCreated(owner);
         return eventService.saveEvent(event, aggregate);
     }
 
@@ -31,7 +31,7 @@ public class CommandService {
 
     public Event withdrawal(Aggregate aggregate, BankAccount account, long amount){
         AccountEvent event = new WithdrawalPerformed(amount);
-        event.apply(account);
+        account.apply(event);
         return eventService.saveEvent(event, aggregate);
     }
 }

@@ -20,8 +20,4 @@ public class AggregateService {
     public Aggregate getAggregate(long id){
         return aggregateRepository.getOne(id);
     }
-
-    public Aggregate save(Aggregate aggregate){
-        return aggregateRepository.save(aggregate);
-    }
 }

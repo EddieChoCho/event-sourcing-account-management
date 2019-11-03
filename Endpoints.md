@@ -6,7 +6,6 @@
     | Key    | Description	              | Example	       |
     | ------ | -------------------------- | ---------------|
     | owner  | Name of the account owner  | Arthur Morgan  |
-    | amount | Deposit amount             | 500            |
 
 * HTTP response 200
     ```
@@ -14,7 +13,7 @@
         "id": 2,
         "creationDate": "2019-10-12T16:37:11.714+0000",
         "type": "BankAccountCreated",
-        "content": "{\"owner\":\"Arthur Morgan\",\"amount\":500}",
+        "content": "{\"owner\":\"Arthur Morgan\"}",
         "version": 1,
         "aggregate": {
             "id": 1,

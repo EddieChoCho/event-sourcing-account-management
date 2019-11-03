@@ -22,7 +22,7 @@ public class QueryService {
     public BankAccount getBankAccount(long aggregateId){
         List<AccountEvent> accountEvents = eventService.getAccountEvents(aggregateId);
         BankAccount account = new BankAccount(aggregateId);
-        accountEvents.stream().forEach(event -> event.apply(account));
+        accountEvents.forEach(account::apply);
         return account;
     }
 

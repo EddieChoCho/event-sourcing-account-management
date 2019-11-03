@@ -1,8 +1,11 @@
 package com.eddie.eventsourcingaccountmanagement.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@Data
 @MappedSuperclass
 public abstract class AbstractEntity {
     @Id
@@ -13,15 +16,4 @@ public abstract class AbstractEntity {
     @Column(name = "creation_date", nullable = false, updatable = false)
     private Date creationDate = new Date();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
 }

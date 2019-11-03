@@ -65,14 +65,14 @@ public class SnapShotService {
     private BankAccountSnapshot getAccountSnapshot(long aggregateId){
         BankAccountSnapshot snapshot = new BankAccountSnapshot(aggregateId);
         List<AccountEvent> events = eventService.getAccountEvents(aggregateId);
-        events.stream().forEach(event -> event.apply(snapshot));
+        events.forEach(snapshot::apply);
         return snapshot;
     }
 
     private BankAccountSnapshot getAccountSnapshot(long aggregateId, Snapshot snapshot){
         BankAccountSnapshot accountSnapshot = converter.convertToAccountSnapshot(snapshot);
         List<AccountEvent> events = eventService.getAccountEvents(aggregateId, snapshot.getVersion());
-        events.stream().forEach(event -> event.apply(accountSnapshot));
+        events.forEach(accountSnapshot::apply);
         return accountSnapshot;
     }
 

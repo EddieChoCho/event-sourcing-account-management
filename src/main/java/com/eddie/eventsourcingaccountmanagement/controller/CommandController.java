@@ -24,9 +24,9 @@ public class CommandController {
     }
 
     @PostMapping("/account")
-    public Event createAccount(@RequestParam(value = "owner") String owner, @RequestParam(value = "money") long money) {
+    public Event createAccount(@RequestParam(value = "owner") String owner) {
         Aggregate aggregate = aggregateService.createAggregate();
-        return commandService.createAccount(aggregate, owner, money);
+        return commandService.createAccount(aggregate, owner);
     }
 
     @PostMapping("/account/{id}/deposit")
