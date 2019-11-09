@@ -7,7 +7,7 @@ import com.eddie.eventsourcingaccountmanagement.exception.BalanceException;
 import lombok.Data;
 
 @Data
-public class BankAccount extends AbstractDomainObject {
+public class BankAccount implements DomainObject {
     private Long id;
     private String owner;
     private long balance;

@@ -5,9 +5,9 @@ import com.eddie.eventsourcingaccountmanagement.event.BankAccountCreated;
 import com.eddie.eventsourcingaccountmanagement.event.DepositPerformed;
 import com.eddie.eventsourcingaccountmanagement.event.WithdrawalPerformed;
 
-public abstract class AbstractDomainObject {
+public interface DomainObject {
 
-    public void apply(final AccountEvent event){
+    default void apply(final AccountEvent event){
         if(event instanceof BankAccountCreated){
             this.apply((BankAccountCreated) event);
         } else if(event instanceof DepositPerformed){
@@ -17,9 +17,9 @@ public abstract class AbstractDomainObject {
         }
     }
 
-    abstract public void apply(BankAccountCreated event);
+    void apply(BankAccountCreated event);
 
-    abstract public void apply(DepositPerformed event);
+    void apply(DepositPerformed event);
 
-    abstract public void apply(WithdrawalPerformed event);
+    void apply(WithdrawalPerformed event);
 }

@@ -6,7 +6,7 @@ import com.eddie.eventsourcingaccountmanagement.event.WithdrawalPerformed;
 import lombok.Getter;
 
 @Getter
-public class BankAccountSnapshot extends AbstractDomainObject  {
+public class BankAccountSnapshot implements DomainObject {
 
     private Long id;
     private String owner;
